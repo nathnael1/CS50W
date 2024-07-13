@@ -8,7 +8,9 @@ from .models import User
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html",{
+        "auctions": Auctions.objects.all()
+    })
 
 
 def login_view(request):
@@ -76,7 +78,8 @@ def listing(request):
             description = description,
             imageurl = imageurl,
             category = category,
-            starting_bid = starting_bid
+            starting_bid = starting_bid,
+            user = request.user
         )
         auction.save()
         return HttpResponse("Success")

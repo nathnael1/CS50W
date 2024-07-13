@@ -6,4 +6,23 @@ input,label{
     display: block;
     margin: 0;
 }
-
+h2{
+    width:80%;
+    margin:1% auto;
+    text-align: center;
+}
+.listing  > * {
+    font-weight: bolder;
+}
+.listing span{
+    font-weight: normal;
+}
+.listing{
+    padding:5px;
+    width:80%;
+    margin:1% auto;
+    border:3px solid #ccc;
+}
+.listing h3{
+    text-align: center;
+}
