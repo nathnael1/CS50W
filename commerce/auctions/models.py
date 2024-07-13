@@ -12,3 +12,7 @@ class Auctions(models.Model):
     category = models.CharField(max_length=64)
     imageurl = models.URLField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="auctions",default=settings.DEFAULT_USER_ID)
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
+    auction = models.ForeignKey(Auctions, on_delete=models.CASCADE, related_name="watchlist")
+    

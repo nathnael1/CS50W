@@ -14,10 +14,10 @@
             <p>Activated By:  <span>{{auction.user.username}}</span></p>
         </div>
     {% if auction.user.username == user.username %}
-        <form action="{% url 'delete' auction.id %}" method="post">
+        <form action="{% url 'close' auction.id %}" method="post">
             {% csrf_token %}
             <div class="del-container">
-                <input type="submit" class = "del" value="Delete">
+                <input type="submit" class = "del" value="Close">
             </div>
             
         </form>

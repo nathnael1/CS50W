@@ -1,10 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.urls import reverse
-from .models import Auctions
-from .models import User
+from .models import Auctions, User, Watchlist
 
 
 def index(request):
@@ -91,9 +90,41 @@ def modify(request,auction_id):
         })
     else:
         return "TODO"
-def delete(request,auction_id):
+def close(request,auction_id):
     pass
 def bid(request,auction_id):
     pass
 def watchlist(request,auction_id):
-    pass
+    if request.method =="POST":
+        user = get_object_or_404(User,username = request.user)
+        watchlistchecker = Watchlist.objects.filter(user = user,auction = Auctions.objects.get(pk=auction_id))
+        if watchlistchecker:
+            return render(request,"auctions/index.html",{
+                "auctions": Auctions.objects.all(),
+                "message": "already added to the watchlist"
+            })
+        watchlist = Watchlist(
+            user = request.user,
+            auction = Auctions.objects.get(pk=auction_id)
+        )
+        watchlist.save()
+        return render(request,"auctions/index.html",{
+            "auctions": Auctions.objects.all(),
+            "message": "sucesfully added to the watchlist"
+        })
+    # for the get method the auction_id is passed as a username
+    user = get_object_or_404(User,username = auction_id)
+    watchlist = Watchlist.objects.filter(user = user)
+    auctions = [item.auction for item in watchlist]
+    return render(request,"auctions/watchlist.html",{
+        "auctions":auctions
+    })
+def deleteWatchlist(request,auction_id):
+    if request.method == "POST":
+        auction = get_object_or_404(Auctions,pk = auction_id)
+        watchlist = Watchlist.objects.filter(auction = auction,user = request.user)
+        watchlist.delete()
+        return render(request,"auctions/index.html",{
+            "auctions": Auctions.objects.all(),
+            "message": "sucesfully removed from the watchlist"
+        })

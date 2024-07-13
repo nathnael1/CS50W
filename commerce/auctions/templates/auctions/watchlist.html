@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{% static 'auctions/styles.css' %}">
 {% endblock %}
 {% block body %}
-    <h2>Active Listings</h2>
+    <h2>Watchlist Listings</h2>
     {% if message %}
         <div class="message">{{ message }}</div>
     {% endif %}
@@ -16,6 +16,10 @@
             <p>Category: <span>{{ auction.category }}</span></p>
             <img src="{{auction.imageurl}}" alt="imagenotfound">
             <p>Activated By:  <span>{{auction.user.username}}</span></p>
+            <form action="{% url 'deleteWatchlist' auction.id %}" method = "post">
+                {% csrf_token %}
+                <input type="submit" value="Remove from Watchlist">
+            </form>
         </div>
         {% empty %}
         No active listings.
