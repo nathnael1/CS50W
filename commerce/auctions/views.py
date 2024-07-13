@@ -83,4 +83,17 @@ def listing(request):
         )
         auction.save()
         return HttpResponse("Success")
-        
+def modify(request,auction_id):
+    if request.method == "GET":
+        return render(request,"auctions/modify.html",{
+            "auction": Auctions.objects.get(pk=auction_id),
+            "user": request.user
+        })
+    else:
+        return "TODO"
+def delete(request,auction_id):
+    pass
+def bid(request,auction_id):
+    pass
+def watchlist(request,auction_id):
+    pass

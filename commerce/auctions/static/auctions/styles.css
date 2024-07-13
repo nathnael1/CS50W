@@ -26,3 +26,43 @@ h2{
 .listing h3{
     text-align: center;
 }
+.del-container{
+    width:15%;
+    float:right;
+    clear:both;
+    margin-bottom: 2%;
+}
+.del{
+
+    display:block;
+    margin:1%;
+    border:2px solid cyan;
+    
+}
+.bcontainer{
+    width:40%;
+    float:right;
+    clear:both
+}
+.bcontainer input{
+    display:inline-block;
+    width:30%;
+    margin:1%;
+    border:2px solid cyan;
+}
+.bcontainer input[type = "number"]{
+    border:2px solid gray;
+}
+.w-container{
+    width:25%;
+    float:right;
+    clear:both;
+    margin-bottom: 2%;
+}
+.wel{
+
+    display:block;
+    margin:1%;
+    border:2px solid cyan;
+    
+}

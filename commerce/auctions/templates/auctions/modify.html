@@ -1,0 +1,44 @@
+{% extends "auctions/layout.html" %}
+{% load static  %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auctions/styles.css' %}">
+{% endblock %}
+{% block body %}
+    <h2>Active Listings</h2>
+        <div class="listing">
+            <h3>{{ auction.title }}</h3>
+            <p>Description: <span>{{ auction.description }}</span></p>
+            <p>Starting bid: <span>${{ auction.starting_bid }}</span></p>
+            <p>Category: <span>{{ auction.category }}</span></p>
+            <img src="{{auction.imageurl}}" alt="imagenotfound">
+            <p>Activated By:  <span>{{auction.user.username}}</span></p>
+        </div>
+    {% if auction.user.username == user.username %}
+        <form action="{% url 'delete' auction.id %}" method="post">
+            {% csrf_token %}
+            <div class="del-container">
+                <input type="submit" class = "del" value="Delete">
+            </div>
+            
+        </form>
+    {% endif %}
+    {% if auction.user.username != user.username %}
+        <form action="{% url 'bid' auction.id %}" method="post">
+            {% csrf_token %}
+            <div class="bcontainer">
+                <input type="number" name="bid" id="bid">
+                <input type="submit" value="Bid">
+            </div>
+
+        </form>
+    {% endif %}
+    {% if auction.user.username != user.username %}
+        <form action="{% url 'watchlist' auction.id %}" method="post">
+            {% csrf_token %}
+            <div class="w-container">
+                <input  class = "wel"type="submit" value="Add to wachlist">
+            </div>
+            
+        </form>
+    {% endif %}
+{% endblock %}

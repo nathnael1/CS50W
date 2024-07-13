@@ -7,7 +7,7 @@
     <h2>Active Listings</h2>
     {% for auction in auctions %}
         <div class="listing">
-            <h3>{{ auction.title }}</h3>
+            <h3><a href="{% url 'modify' auction.id %}">{{ auction.title }}</a></h3>
             <p>Description: <span>{{ auction.description }}</span></p>
             <p>Starting bid: <span>${{ auction.starting_bid }}</span></p>
             <p>Category: <span>{{ auction.category }}</span></p>
