@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.urls import reverse
-from .models import Auctions, User, Watchlist
+from .models import Auctions, User, Watchlist, Bidding
 
 
 def index(request):
@@ -81,7 +81,10 @@ def listing(request):
             user = request.user
         )
         auction.save()
-        return HttpResponse("Success")
+        return render(request,"auctions/index.html",{
+            "message": "Auction created sucesfully",
+            "auctions": Auctions.objects.all()
+        })
 def modify(request,auction_id):
     if request.method == "GET":
         return render(request,"auctions/modify.html",{
@@ -127,4 +130,46 @@ def deleteWatchlist(request,auction_id):
         return render(request,"auctions/index.html",{
             "auctions": Auctions.objects.all(),
             "message": "sucesfully removed from the watchlist"
+        })
+def bidding(request,auction_id):
+    if request.method == "POST":
+        auction = get_object_or_404(Auctions,pk = auction_id)
+        bid = int(request.POST["bid"] )
+        if auction.starting_bid > bid:
+            return render(request,"auctions/index.html",{
+                "auctions": Auctions.objects.all(),
+                "message": f"Failure: The minimum amount of bid is {auction.starting_bid}"
+            })
+        biddingChecker = Bidding.objects.filter(auction = auction)
+        if biddingChecker:
+            return render(request,"auctions/index.html",{
+                "auctions":Auctions.objects.all(),
+                "message": "you can't dublicate a bid"
+            })
+        bidding = Bidding( user = request.user, auction = auction, bid = bid)
+        bidding.save()
+        bidding = Bidding.objects.filter(user = request.user)
+        auction = [item.auction for item in bidding]
+        total = sum(item.bid for item in bidding)
+        
+        return render(request,"auctions/bidding.html",{
+            "auctions":auction,
+            "total":total,
+            "message": "Bid sucessfully submitted"
+        })
+    else:
+        user = get_object_or_404(User,username = auction_id)
+        bidding = Bidding.objects.filter(user = user)
+        total = sum(item.bid for item in bidding)
+        auctions = [item.auction for item in bidding]
+        return render(request,"auctions/bidding.html",{ "auctions": auctions,"total":total})
+def bidDeletion(request,auction_id):
+    if request.method == "POST":
+        auction = get_object_or_404(Auctions,pk = auction_id)
+        bid = Bidding.objects.filter(auction = auction,user = request.user)
+        bid.delete()
+        return render(request,"auctions/index.html",{
+            "auctions": Auctions.objects.all(),
+            "message": "Bid removed sucesfully"
+           
         })

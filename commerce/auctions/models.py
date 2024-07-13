@@ -15,4 +15,8 @@ class Auctions(models.Model):
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="watchlist")
     auction = models.ForeignKey(Auctions, on_delete=models.CASCADE, related_name="watchlist")
+class Bidding(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidding")
+    auction = models.ForeignKey(Auctions, on_delete=models.CASCADE, related_name="bidding")
+    bid = models.DecimalField(max_digits=10, decimal_places=2)
     

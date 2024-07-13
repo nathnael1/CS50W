@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+{% load static  %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auctions/styles.css' %}">
+{% endblock %}
+{% block body %}
+    <h2>Bidding Listings</h2>
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+    {% for auction in auctions %}
+        <div class="listing">
+            <h3>{{ auction.title }}</h3>
+            <p>Description: <span>{{ auction.description }}</span></p>
+            <p>Starting bid: <span>${{ auction.starting_bid }}</span></p>
+            <p>Category: <span>{{ auction.category }}</span></p>
+            <img src="{{auction.imageurl}}" alt="imagenotfound">
+            <p>Activated By:  <span>{{auction.user.username}}</span></p>
+            <form action="{% url 'bidDeletion' auction.id %}" method = "post">
+                {% csrf_token %}
+                <input type="submit" value="Remove from Cart">
+            </form>
+        </div>
+        {% empty %}
+        No active listings.
+    {% endfor %}
+    <div class="total">Total Bid {{total}}</div>
+{% endblock %}

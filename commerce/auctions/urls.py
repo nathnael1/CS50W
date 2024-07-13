@@ -10,7 +10,8 @@ urlpatterns = [
     path("listing",views.listing,name = "listing"),
     path("modify/<int:auction_id>",views.modify,name = "modify"),
     path("close/<int:auction_id>",views.close,name ="close"),
-    path("bid/<int:auction_id>",views.bid,name = "bid"),
+    path("bid/<str:auction_id>",views.bidding,name = "bid"),
     path("watchlist/<str:auction_id>",views.watchlist,name = "watchlist"),
-    path("watchlist/delete/<str:auction_id>",views.deleteWatchlist, name = "deleteWatchlist")
+    path("watchlist/delete/<str:auction_id>",views.deleteWatchlist, name = "deleteWatchlist"),
+    path("bid/delete/<str:auction_id>",views.bidDeletion,name = "bidDeletion")
 ]
