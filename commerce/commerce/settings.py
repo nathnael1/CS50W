@@ -117,6 +117,7 @@ USE_L10N = True
 
 USE_TZ = True
 DEFAULT_USER_ID = 1 
+DEFAULT_ACTION_TITLE = "No Winner Yet"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

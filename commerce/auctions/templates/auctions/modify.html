@@ -17,12 +17,12 @@
         <form action="{% url 'close' auction.id %}" method="post">
             {% csrf_token %}
             <div class="del-container">
-                <input type="submit" class = "del" value="Close">
+                <input type="submit" class = "del" value="Close Auctions">
             </div>
             
         </form>
     {% endif %}
-    {% if auction.user.username != user.username %}
+    {% if auction.user.username != user.username and request.user.is_authenticated %}
         <form action="{% url 'bid' auction.id %}" method="post">
             {% csrf_token %}
             <div class="bcontainer">
@@ -32,7 +32,7 @@
 
         </form>
     {% endif %}
-    {% if auction.user.username != user.username %}
+    {% if auction.user.username != user.username and request.user.is_authenticated%}
         <form action="{% url 'watchlist' auction.id %}" method="post">
             {% csrf_token %}
             <div class="w-container">

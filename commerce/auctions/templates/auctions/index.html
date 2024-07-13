@@ -8,6 +8,11 @@
     {% if message %}
         <div class="message">{{ message }}</div>
     {% endif %}
+    {% if messageList %}
+        {% for message in messageList %}
+            <div class="message">You have won  the auction {{ message }}</div>
+        {% endfor %}
+    {% endif %}
     {% for auction in auctions %}
         <div class="listing">
             <h3><a href="{% url 'modify' auction.id %}">{{ auction.title }}</a></h3>

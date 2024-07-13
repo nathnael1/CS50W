@@ -3,10 +3,17 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.urls import reverse
-from .models import Auctions, User, Watchlist, Bidding
-
+from .models import Auctions, User, Watchlist, Bidding, Winners
 
 def index(request):
+    if request.user.is_authenticated:
+        winner = Winners.objects.filter(user = request.user)
+        if winner:
+            auctionWinner = [item.auction_title for item in winner]
+            return render(request, "auctions/index.html",{
+                "auctions": Auctions.objects.all(),
+                "messageList": auctionWinner
+            })
     return render(request, "auctions/index.html",{
         "auctions": Auctions.objects.all()
     })
@@ -92,11 +99,27 @@ def modify(request,auction_id):
             "user": request.user
         })
     else:
-        return "TODO"
+        return "Not found"
 def close(request,auction_id):
-    pass
-def bid(request,auction_id):
-    pass
+    if request.method == "POST":
+        auction = get_object_or_404(Auctions,pk = auction_id)
+        bidding = Bidding.objects.filter(auction = auction)
+        if bidding:
+            highest_bid =  max(item.bid for item in bidding)
+            winning_bid = Bidding.objects.get(bid = highest_bid,auction=auction)
+            winners = Winners(user = winning_bid.user,auction = auction,auction_title = auction.title)
+            winners.save()
+            auction.delete()
+            return render(request,"auctions/index.html",{
+                "auctions": Auctions.objects.all(),
+                "message": "Auction closed succesfully The winner is "+ winners.user.username
+            })
+        else:
+            auction.delete()
+            return render(request,"auctions/index.html",{
+                "auctions": Auctions.objects.all(),
+                "message": "Auction closed succesfully" + "No bids were made"
+            })
 def watchlist(request,auction_id):
     if request.method =="POST":
         user = get_object_or_404(User,username = request.user)
@@ -140,7 +163,7 @@ def bidding(request,auction_id):
                 "auctions": Auctions.objects.all(),
                 "message": f"Failure: The minimum amount of bid is {auction.starting_bid}"
             })
-        biddingChecker = Bidding.objects.filter(auction = auction)
+        biddingChecker = Bidding.objects.filter(auction = auction,user = request.user)
         if biddingChecker:
             return render(request,"auctions/index.html",{
                 "auctions":Auctions.objects.all(),

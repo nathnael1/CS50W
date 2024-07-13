@@ -19,4 +19,9 @@ class Bidding(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bidding")
     auction = models.ForeignKey(Auctions, on_delete=models.CASCADE, related_name="bidding")
     bid = models.DecimalField(max_digits=10, decimal_places=2)
+class Winners(models.Model):
+    auction = models.ForeignKey(Auctions, on_delete=models.SET_NULL, related_name="winner", null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="winner", null=True)
+    auction_title = models.CharField(max_length=64,default=settings.DEFAULT_ACTION_TITLE)
+
     
