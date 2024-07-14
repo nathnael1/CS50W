@@ -3,7 +3,8 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from django.urls import reverse
-from .models import Auctions, User, Watchlist, Bidding, Winners
+from .models import Auctions, User, Watchlist, Bidding, Winners, Comments
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     if request.user.is_authenticated:
@@ -196,3 +197,90 @@ def bidDeletion(request,auction_id):
             "message": "Bid removed sucesfully"
            
         })
+def comment(request,auction_id):
+    if request.method == "GET":
+        auction = get_object_or_404(Auctions,pk = auction_id)
+        comments = Comments.objects.filter(auction = auction)
+        return render(request,"auctions/comment.html",{
+            "title":auction.title,
+            "id":auction.id,
+            "comments":comments
+        })
+    else:
+        commentadded = request.POST["commentadder"]
+        user = request.user
+        auction = get_object_or_404(Auctions, pk = auction_id)
+        comments = Comments.objects.filter(auction = auction)
+        newcomment = Comments(
+            user = user,
+            auction = auction,
+            comment = commentadded
+        )
+        newcomment.save()
+        return render(request,"auctions/comment.html",{
+            "title":auction.title,
+            'id':auction.id,
+            "comments":comments
+        })
+
+def category(request):
+    if request.method == "POST":
+        category = request.POST.get("category")
+     
+            
+        auctions = Auctions.objects.filter(category=category)
+      
+        if auctions:
+            if category == "Fashion":
+                return render(request, "auctions/index.html", {
+                    "auctions": auctions,
+                    "a":"design"
+                })
+            elif category == "Toys":
+                return render(request, "auctions/index.html", {
+                    "auctions": auctions,
+                    "b":"design"
+                })
+            elif category == "Electronics":
+                return render(request, "auctions/index.html", {
+                    "auctions": auctions,
+                    "c":"design"
+                })
+            elif category == "Home":
+                return render(request, "auctions/index.html", {
+                    "auctions": auctions,
+                    "d":"design"
+                })
+            elif category == "Other":
+                return render(request, "auctions/index.html", {
+                    "auctions": auctions,
+                    "e":"design"
+                })
+        else:
+            if category == "Fashion":
+                return render(request, "auctions/index.html", {
+     
+                    "a":"design"
+                })
+            elif category == "Toys":
+                return render(request, "auctions/index.html", {
+                   
+                    "b":"design"
+                })
+            elif category == "Electronics":
+                return render(request, "auctions/index.html", {
+            
+                    "c":"design"
+                })
+            elif category == "Home":
+                return render(request, "auctions/index.html", {
+              
+                    "d":"design"
+                })
+            elif category == "Other":
+                return render(request, "auctions/index.html", {
+              
+                    "e":"design"
+                })
+    
+    return render(request, "auctions/index.html")

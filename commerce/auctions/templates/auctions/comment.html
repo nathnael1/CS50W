@@ -1,0 +1,37 @@
+{% extends "auctions/layout.html" %}
+{% load static  %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'auctions/styles.css' %}">
+{% endblock %}
+{% block body %}
+    <h2>Comment of auctions - {{title}}</h2>
+    
+    <div class="auction-img">
+        {% if comments %}
+        <img src="{{ comments.0.auction.imageurl }}" alt="imagenotfound">
+    {% else %}
+        <p>No comments available.</p>
+    {% endif %}
+    
+    
+    </div>
+
+    {% for comment in comments %}
+        <div class="listing">
+            <p>user: <span>{{ comment.user }}</span></p>
+            <p>comment  <span>${{ comment.comment }}</span></p>
+
+        </div>
+        {% empty %}
+        No comment
+    {% endfor %}
+    {% if user.is_authenticated %}
+        
+            <form action="{% url 'comment' id %}" class="commenting" method="POST">
+                {% csrf_token %}
+                <textarea name="commentadder" id="comments"></textarea>
+                <input type="submit" value="Add a comment">
+            </form>
+    
+    {% endif %}
+{% endblock %}

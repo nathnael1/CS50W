@@ -16,6 +16,7 @@
             <p>Category: <span>{{ auction.category }}</span></p>
             <img src="{{auction.imageurl}}" alt="imagenotfound">
             <p>Activated By:  <span>{{auction.user.username}}</span></p>
+            <a href="{% url 'comment' auciton.id %}">Comments</a>
             <form action="{% url 'deleteWatchlist' auction.id %}" method = "post">
                 {% csrf_token %}
                 <input type="submit" value="Remove from Watchlist">

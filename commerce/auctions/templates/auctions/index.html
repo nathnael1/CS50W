@@ -2,6 +2,7 @@
 {% load static  %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'auctions/styles.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
 {% block body %}
     <h2>Active Listings</h2>
@@ -13,6 +14,21 @@
             <div class="message">You have won  the auction {{ message }}</div>
         {% endfor %}
     {% endif %}
+ 
+
+    <form method="POST" action="{% url 'category' %}" class = "button">
+        {% csrf_token %}
+        <ul>
+            <li><button type="submit" name="category" value="Fashion" class = "{{a}}">Fashion</button></li>
+            <li><button type="submit" name="category" value="Toys" class = "{{b}}">Toys</button></li>
+            <li><button type="submit" name="category" value="Electronics" class = "{{c}}">Electronics</button></li>
+            <li><button type="submit" name="category" value="Home" class = "{{d}}">Home</button></li>
+            <li><button type="submit" name="category" value="Other" class = "{{e}}">Other</button></li>
+        </ul>
+    </form>
+    
+    
+    {% if auctions %}
     {% for auction in auctions %}
         <div class="listing">
             <h3><a href="{% url 'modify' auction.id %}">{{ auction.title }}</a></h3>
@@ -21,8 +37,14 @@
             <p>Category: <span>{{ auction.category }}</span></p>
             <img src="{{auction.imageurl}}" alt="imagenotfound">
             <p>Activated By:  <span>{{auction.user.username}}</span></p>
+            <a href="{% url 'comment' auction.id %}">Comments</a>
         </div>
         {% empty %}
         No active listings.
     {% endfor %}
+    {% else %}
+    <div class="message">No auction for this category</div>
+    {% endif %}
+    
+  
 {% endblock %}
