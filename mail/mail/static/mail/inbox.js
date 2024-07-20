@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   // Use buttons to toggle between views
+  document.querySelector('#semail').style.display = 'none';
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
@@ -38,6 +39,7 @@ function compose_email() {
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
+  document.querySelector('#semail').style.display = 'none';
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
@@ -109,9 +111,110 @@ function load_mailbox(mailbox) {
             });
           });
         }
+
+        
+        email.addEventListener('click', () => {
+          document.querySelector('#emails-view').style.display = 'none';
+          document.querySelector('#compose-view').style.display = 'none';
+          document.querySelector('#semail').style.display = 'block';
+          console.log(`Email ID: ${email.dataset.id} clicked`); // Log the email ID
+          fetch(`/emails/${email.dataset.id}`)
+          .then(response => response.json())
+          .then(result => {
+            document.querySelector('#semail').innerHTML = `
+            <div id = "first">
+                <div id = "firstl">
+                    <p><b>From:</b> ${result.sender}</p>
+                    <p><b>To:</b> ${result.recipients}</p>
+                </div>
+                <div id = "firstm">
+                    <p>${result.subject}</p>
+                </div>
+                <div id = "r">
+                    <p>${result.timestamp}</p>
+                </div>
+            </div>
+            <div id = "second">
+                <p>${result.body}</p>
+            </div>
+
+            `
+            if(mailbox === 'inbox'){
+              document.querySelector('#semail').innerHTML += `
+                <div id = "third">
+              <button id = "reply">Reply</button>
+              <button id = "archive">Archive</button>
+            </div>
+              `
+              document.querySelector('#archive').addEventListener('click', () => {
+                fetch(`emails/${email.dataset.id}`,{
+                  method:'PUT',
+                  body:JSON.stringify({
+                    archived:true
+                  })
+                })
+                .then(response => response.json())
+                .then(()=>{
+                  load_mailbox('inbox')
+              })
+                .catch(error =>{
+                  console.log("Error:",error)
+                } )
+              
+              })
+            }
+            else if(mailbox === 'archive'){
+              document.querySelector('#semail').innerHTML += `
+              <div id = "third">
+            <button id = "reply">Reply</button>
+            <button id = "unarchive">Unarchive</button>
+          </div>
+            `
+            document.querySelector('#unarchive').addEventListener('click', () => {
+              fetch(`emails/${email.dataset.id}`,{
+                method:'PUT',
+                body:JSON.stringify({
+                  archived:false
+                })
+              })
+              .then(response => response.json())
+              .then(()=>{
+                load_mailbox('inbox')
+            })
+              .catch(error =>{
+                console.log("Error:",error)
+              } )
+            
+            })
+            }
+            document.querySelector('#reply').addEventListener('click', () => {
+              document.querySelector('#emails-view').style.display = 'none';
+              document.querySelector('#semail').style.display = 'none';
+              document.querySelector('#compose-view').style.display = 'block';
+
+            
+              document.querySelector('#compose-recipients').value = `${result.sender}`;
+              document.querySelector('#compose-subject').value = `Re: ${result.subject}`;
+              document.querySelector('#compose-body').value = `
+.....................................................................
+On ${result.timestamp} ${result.sender} wrote:
+" ${result.body} "
+              `;
+            
+            })
+          })
+          .catch(error => {
+            console.log("Error:", error);
+          });
+        });
+        
+   
+
       });
     })
     .catch(error => {
       console.log("Error:", error);
     });
+    document.querySelector('#semail').style.display = 'none';
+    
 }

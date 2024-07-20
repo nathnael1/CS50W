@@ -7,6 +7,50 @@ textarea {
     margin-top: 10px;
     padding:5px;
 }
+.email:hover{
+    cursor: pointer;
+    background-color: rgba(136, 129, 129,0.1);
+}
 .read{
     background-color: rgb(235, 234, 234);
+
+}
+#semail{
+    display:block;
+
+    margin:1% auto;
+    border:2px solid #fff;
+    border-radius:10px;
+}
+#first{
+    display:flex;
+    justify-content: space-between;
+}
+#firstl p, #r p{
+    font-size:0.8rem;
+}
+#firstm p{
+    font-size:2rem;
+    font-weight:bolder;
+}
+#second{
+    width:100%;
+    border:1px solid #000;
+    margin: 1% 0;
+    border-radius:7px;
+    padding:5px;
+}
+#third{
+    width:fit-content
+}
+#third button{
+    margin: 1% 0;
+    padding: 5px;
+    border-radius: 5px;
+    border:1px solid #989A99;
+    background-color: #fff;
+}
+#third button:hover{
+    cursor: pointer;
+    background-color: #F2F2F2;
 }
