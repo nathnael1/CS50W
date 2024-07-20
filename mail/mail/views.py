@@ -177,3 +177,16 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "mail/register.html")
+@csrf_exempt
+def emailStatus(request,email_id):
+    if request.method == "PUT":
+        email = Email.objects.get(pk=email_id)
+        email.read = True
+        email.save()
+        return JsonResponse({"message": "Email status updated successfully."}, status=201)
+    if request.method == "POST":
+        email = Email.objects.get(pk=email_id)
+        email.read = True
+        email.save()
+        return JsonResponse({"message": "Email status updated successfully."}, status=201)
+    return JsonResponse({"error": "Invalid request method."}, status=400)
