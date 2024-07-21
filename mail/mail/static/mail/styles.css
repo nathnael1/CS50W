@@ -2,10 +2,13 @@ textarea {
     min-height: 400px;
 }
 .email{
-    border:1px solid rgba(136, 129, 129,0.4);
-    border-radius: 5px;
-    margin-top: 10px;
+    border-bottom:1px solid rgba(136, 129, 129,0.4);
+  
+   
     padding:5px;
+    margin: 0;
+    display:flex;
+    justify-content: space-between;
 }
 .email:hover{
     cursor: pointer;
@@ -53,4 +56,167 @@ textarea {
 #third button:hover{
     cursor: pointer;
     background-color: #F2F2F2;
+}
+body{
+    background-color: #f2f2f2;
+}
+.container{
+    background-color: #fff;
+    margin-top: 1%;
+    margin-bottom: 1%;
+
+    padding: 0;
+    min-height:80Vh;
+    border-radius: 10px;
+}
+.scontainer{
+    margin-top: 1%;
+    display:flex;
+    justify-content:flex-start
+}
+.scontainer * {
+    margin-right: 2%;
+    font-family: 'Roboto', sans-serif;
+}
+.scontainer *:last-child{
+    margin-right: 0;
+}
+.scontainer h2{
+    font-size:1.5rem;
+    padding-top: 2%;
+    margin-right: 6%;
+}
+.scontainer img{
+    max-width: 7%;
+
+}
+.scontainer button{
+   background: #fff;
+ 
+    border:none;
+}
+.container button a{
+    color:#000;
+    text-decoration: none;
+}
+.scontainer button:hover{
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    border:none;
+}
+.scontainer button:focus{
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    border:none;
+    outline:none;
+}
+#compose-form > input{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    background-color: #f2f2f2;
+    border:#f2f2f2 1px solid;
+    color:#000;
+    
+}
+
+#compose-form > input:hover{
+    background-color: #fff;
+}
+footer{
+    width:100%;
+    position: fixed;
+    bottom: 0%;
+    margin-top: 1%;
+    background-color: #fff;
+    margin-bottom: 0%;
+    padding:5px;
+    padding-bottom: 0;
+    font-family: 'Roboto', sans-serif;
+}
+footer p{
+    padding:5px;
+    padding-bottom: 1px;
+    float:left;
+    color:#000;
+    width:50%;
+}
+#connect{
+    width:40%;
+    float:right;
+    
+}
+#connect *{
+    margin-right:5px;
+    color:#1a73e8;
+    font-family: 'Roboto',  sans-serif;
+   
+}
+#connect img{
+
+    width:3.5%;
+}
+#connect a:first-child{
+    margin-left: 70%;
+}
+
+#connect img:hover{
+    animation:link 0.5s linear forwards;
+   
+}
+@keyframes link {
+  from{
+    width:3.5%
+  }  
+  to{
+    width:4%;
+  }
+}
+.head{
+    display:flex;
+    
+}
+.head img{
+    max-width: 7%;
+}
+.head h2 {
+    font-size:1.5rem;
+    padding-top: 2%;
+    margin-right: 6%;
+}
+.scontainer button.active {
+    background-color: #f2f2f2;
+    border-radius: 5px;
+}
+.temp{
+    width:100%;
+    margin: 0 ;
+    text-align:center;
+    background-color: hsl(120, 100%, 95%); /* Light Green */
+    color: hsl(120, 100%, 25%);
+    animation:temp 2s ease-in forwards ;
+    height:40px;
+    border-radius: 7px;
+    overflow: hidden;
+    padding-left: 50px;
+}
+@keyframes temp {
+    25%{
+        height:40px
+    }
+    50%{
+        height:20px;
+    }
+    75%{
+        height:10px;
+    }
+    100%{
+        height:0;
+        display:none;
+    }
+}
+#compose-view{
+    padding:15px;
+}
+#emails-view > h3{ 
+    padding:10px;
 }

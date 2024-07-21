@@ -6,7 +6,15 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
-
+  document.querySelectorAll('.scontainer button').forEach(element => {
+    element.addEventListener('click', (event) => {
+        // Remove 'active' class from all buttons
+        document.querySelectorAll('.scontainer button').forEach(btn => btn.classList.remove('active'));
+        
+        // Add 'active' class to the clicked button
+        event.target.classList.add('active');
+    });
+});
   document.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
     fetch('emails',{
@@ -19,7 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
     })
   .then(response => response.json())
   .then(result => {
-    console.log(result);
+    checker = true
+    message= "Email Sent sucessfully"
+    document.querySelectorAll('.scontainer button').forEach(element => {
+      element.classList.remove('active')
+      document.querySelector('#sent').classList.add('active')
+  });
     load_mailbox('sent');
   })
   .catche(error =>{
@@ -45,7 +58,8 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
-
+let checker = false
+let message = '';
 function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
@@ -61,7 +75,13 @@ function load_mailbox(mailbox) {
       console.log(emails);
 
       const emailContainer = document.createElement('div');
-
+      if (checker){
+        const tempDiv = document.createElement('div')
+        tempDiv.classList.add('temp');
+        tempDiv.innerHTML=message;
+        document.querySelector('#emails-view').append(tempDiv);
+        checker = false
+      }
       emails.forEach(email => {
         const emailDiv = document.createElement('div');
         emailDiv.classList.add('email');
@@ -155,6 +175,12 @@ function load_mailbox(mailbox) {
                 })
                 .then(response => response.json())
                 .then(()=>{
+                  checker = true
+                  message= "Email Archived sucessfully"
+                  document.querySelectorAll('.scontainer button').forEach(element => {
+                    element.classList.remove('active')
+                    document.querySelector('#inbox').classList.add('active')
+                });
                   load_mailbox('inbox')
               })
                 .catch(error =>{
@@ -179,6 +205,12 @@ function load_mailbox(mailbox) {
               })
               .then(response => response.json())
               .then(()=>{
+                checker = true
+                message= "Email Unarchived sucessfully"
+                document.querySelectorAll('.scontainer button').forEach(element => {
+                  element.classList.remove('active')
+                  document.querySelector('#inbox').classList.add('active')
+              });
                 load_mailbox('inbox')
             })
               .catch(error =>{
@@ -216,5 +248,5 @@ On ${result.timestamp} ${result.sender} wrote:
       console.log("Error:", error);
     });
     document.querySelector('#semail').style.display = 'none';
-    
+   
 }

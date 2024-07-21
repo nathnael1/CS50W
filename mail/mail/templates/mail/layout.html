@@ -5,6 +5,8 @@
     <head>
         <title>{% block title %}Mail{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/952161e113.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="{% static 'mail/styles.css' %}">
         {% block script %}
         {% endblock %}
@@ -13,6 +15,19 @@
         <div class="container">
             {% block body %}
             {% endblock %}
+
         </div>
+        <footer>
+
+                    <p>This cs50 mail is made by Nathnael Tamirat &copy; 2024.</p>
+                    <div id="connect">
+                        <a href="https://t.me/nathnael_tamirat" target="_blank"><img src="{% static 'mail/telegram.svg' %}" ></a>
+                        <a href="https://x.com/NathnaelTamirat" target="_blank"><img src="{% static 'mail/x.svg' %}" ></a>
+                        <a href="https://github.com/nathnael1" target="_blank"><img src="{% static 'mail/github.svg' %}" ></a>
+                        </div>
+ 
+           
+        </footer>
+
     </body>
 </html>
