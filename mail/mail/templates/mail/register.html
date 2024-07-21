@@ -1,7 +1,10 @@
 {% extends "mail/layout.html" %}
-
+{% load static %}
 {% block body %}
-
+<div class="head">
+    <img src="{% static 'mail/mailimage.png' %}" alt="">
+    <h2><b>CS50 Mail</b>{{ request.user.email }}</h2>
+</div>
     <h2>Register</h2>
 
     {% if message %}

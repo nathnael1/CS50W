@@ -2,18 +2,24 @@
 {% load static %}
 
 {% block body %}
-    <h2>{{ request.user.email }}</h2>
+    <div class="scontainer">
+        <img src="{% static 'mail/mailimage.png' %}" alt="">
+        <h2><b>CS50 Mail</b> - {{ request.user.email }}</h2>
+        <button class="active" id="inbox">Inbox</button>
+        <button class="" id="compose">Compose</button>
+        <button class="" id="sent">Sent</button>
+        <button class="" id="archived">Archived</button>
+        <button ><a href="{% url 'logout' %}">Log Out</a></button>
+    </div>
+    
 
-    <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
-    <button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
-    <button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
-    <button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>
-    <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
+
     <hr>
 
     <div id="emails-view">
     </div>
-
+    <div id="semail">
+    </div>
     <div id="compose-view">
         <h3>New Email</h3>
         <form id="compose-form">

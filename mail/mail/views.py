@@ -118,7 +118,9 @@ def email(request, email_id):
         if data.get("archived") is not None:
             email.archived = data["archived"]
         email.save()
-        return HttpResponse(status=204)
+        return JsonResponse({
+            "message":"successful"
+            },status = 201)
 
     # Email must be via GET or PUT
     else:
@@ -177,3 +179,16 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "mail/register.html")
+@csrf_exempt
+def emailStatus(request,email_id):
+    if request.method == "PUT":
+        email = Email.objects.get(pk=email_id)
+        email.read = True
+        email.save()
+        return JsonResponse({"message": "Email status updated successfully."}, status=201)
+    if request.method == "POST":
+        email = Email.objects.get(pk=email_id)
+        email.read = True
+        email.save()
+        return JsonResponse({"message": "Email status updated successfully."}, status=201)
+    return JsonResponse({"error": "Invalid request method."}, status=400)
