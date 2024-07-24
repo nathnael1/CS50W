@@ -1,5 +1,27 @@
 {% extends "network/layout.html" %}
-
+{% load static %}
 {% block body %}
-    TODO
+    <h1>
+        All posts
+    </h1>
+    <form id="createpost" method = "post" action = "{% url 'publish' %}">
+        {% csrf_token %}
+        <input type="text" name = "content">
+        <input type="submit"  value="POST">
+    </form>
+
+    {% for publish in published %}
+        <div class="published">
+            <a href="#" class = "postuser">{{publish.user}}</a>
+            <p class = "content">{{publish.content}}</p>
+            <p class = "time">{{publish.time}}</p>
+            <p class ="like">Likes{{publish.likes}}</p>
+        </div>
+        {%empty%}
+        <h1>No posts</h1>
+    {% endfor %}
+
+
+
 {% endblock %}
+

@@ -1,14 +1,30 @@
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.db import IntegrityError,transaction
+from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from .models import User,Profile,Following,Followers,Publish
+import json
 
-from .models import User
-
-
+#user id request.user.id
 def index(request):
-    return render(request, "network/index.html")
+    published = Publish.objects.all().order_by('-time')
+    if request.user.is_authenticated:
+        if Profile.objects.filter(user=request.user).exists():
+           request.session['profileSet'] = Profile.objects.get(user=request.user).profileSet
+        else:
+           return HttpResponseRedirect(reverse("profile"))
+        if request.session['profileSet']:
+            return render(request, "network/index.html",{
+                'published':published
+            })
+        else:
+            return HttpResponseRedirect(reverse("profile"))
+
+    return render(request, "network/index.html",{
+        'published':published
+    })
 
 
 def login_view(request):
@@ -61,3 +77,77 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+def profile(request):
+    if request.method == "POST":
+        bio = request.POST["bio"]
+        imagelink = request.POST["imagelink"]
+        profile = Profile(user=request.user,bio=bio,image_link=imagelink,profileSet=True)
+        profile.save()
+        request.session['profileSet'] = profile.profileSet
+        return HttpResponseRedirect(reverse("index"))
+    return render(request, "network/profile.html")
+
+
+def publish(request):
+    if request.method == "POST":
+        content = request.POST["content"]
+        publish = Publish(user=request.user,content=content)
+        publish.save()
+        return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("index"))
+
+@csrf_exempt
+def profile_view(request,username):
+    followerpersons = []
+    user = User.objects.get(username=username)
+    username = user.username
+    profile = Profile.objects.get(user=user)
+    bio = profile.bio
+    image_link = profile.image_link
+    followers = Followers.objects.filter(user=user).count()
+    for follower in Followers.objects.filter(user = user):
+        followerpersons.append(follower.follower.username)
+    following = Following.objects.filter(user=user).count()
+
+    if request.user.username.strip().lower() in (name.strip().lower() for name in followerpersons):
+        followed = True
+    else:
+        followed = False
+    postNumber = Publish.objects.filter(user = user).count()
+    publishes = Publish.objects.filter(user = user).order_by('-time')
+    return render(request, "network/profileview.html",{
+
+        'followed':followed,
+        'username':username,
+        'bio':bio,
+        'image_link':image_link,
+        'profile':profile,
+        'followers':followers,
+        'following':following,
+        'postNumber':postNumber,
+        'publishes':publishes
+    })
+@csrf_exempt
+def follow(request, username):
+    if request.method == "PUT":
+        with transaction.atomic():
+            user = User.objects.get(username=username)
+            checkfollow = Followers.objects.filter(user=user, follower=request.user).exists()
+            checkfollowing = Following.objects.filter(user=request.user, following=user).exists()
+            if checkfollow or checkfollowing:
+                return JsonResponse({"message": "already followed"})
+            follow = Followers(user=user, follower=request.user)
+            following = Following(user=request.user, following=user)
+            follow.save()
+            following.save()
+        return JsonResponse({"message": "followed successfully"})
+
+@csrf_exempt
+def unfollow(request,username):
+    if request.method == "PUT":
+        user = User.objects.get(username=username)
+        previousfollow = Followers.objects.filter(user=user,follower=request.user).first()
+        previousfollowing = Following.objects.filter(user=request.user,following=user).first()
+        previousfollow.delete()
+        previousfollowing.delete()
+        return JsonResponse({"message":"unfollowed succesfully"})

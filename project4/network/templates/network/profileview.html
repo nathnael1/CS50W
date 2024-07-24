@@ -1,0 +1,37 @@
+{% extends "network/layout.html" %}
+{% load static %}
+{% block body %}
+    <h1>
+        Profile
+    </h1>
+    <div class="profile">
+       <p>Username {{username}}</p>
+         <p>Bio {{bio}}</p>
+            <p id = "followers">Followers {{followers}}</p>
+            <p>Following {{following}}</p>
+            <img src="{{image_link}}" alt="">
+            <p>Posts {{postNumber}}</p>
+            {% if followed %}
+
+                
+                <button id = "unfollow" data-user = {{username}}>Unfollow</button>
+
+            {%else%}
+
+                <button id = "follow" data-user = {{username}}>Follow</button>
+            {%endif%}
+    </div>
+    
+    {% for publish in publishes %}
+        <div class="published">
+            <p  class = "postuser">{{publish.user}}</p>
+            <p class = "content">{{publish.content}}</p>
+            <p class = "time">{{publish.time}}</p>
+            <p class ="like">Likes{{publish.likes}}</p>
+        </div>
+        {%empty%}
+        <h1>No posts</h1>
+    {% endfor %}
+
+    
+{% endblock %}
