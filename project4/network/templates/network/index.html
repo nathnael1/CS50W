@@ -16,7 +16,11 @@
             <a href="#" class = "postuser">{{publish.user}}</a>
             <p class = "content">{{publish.content}}</p>
             <p class = "time">{{publish.time}}</p>
-            <p class ="like">Likes{{publish.likes}}</p>
+            <p class ="like">Likes: {{publish.likes}}</p>
+            {% if button %}
+            <button data-postid="{{publish.id}}" id = "like">dislike</button>
+            {% else %}
+            <button data-postid = {{publish.id}}" id="dislike">like</button>
             {% if request.user.username == publish.user.username %}
                 <button class="edit" data-postid = "{{publish.id}}">Edit</button>
                 <button class="delete" data-postid = "{{publish.id}}">Delete</button>

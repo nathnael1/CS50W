@@ -20,4 +20,6 @@ class Publish(models.Model):
     content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
-
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userLiked")
+    publishliked = models.ForeignKey(Publish, on_delete=models.CASCADE, related_name="publishLiked")

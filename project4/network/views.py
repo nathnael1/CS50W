@@ -4,24 +4,32 @@ from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from .models import User,Profile,Following,Followers,Publish
+from .models import User,Profile,Following,Followers,Publish,Like
 import json
 
 #user id request.user.id
 def index(request):
     published = Publish.objects.all().order_by('-time')
+    liked = Like.objects.filter(user=request.user).exists()
     if request.user.is_authenticated:
         if Profile.objects.filter(user=request.user).exists():
            request.session['profileSet'] = Profile.objects.get(user=request.user).profileSet
         else:
            return HttpResponseRedirect(reverse("profile"))
         if request.session['profileSet']:
-            return render(request, "network/index.html",{
-                'published':published
-            })
+            if liked:
+                return render(request, "network/index.html",{
+                    'published':published,
+                    'button':True
+                })
+            else:
+                return render(request, "network/index.html",{
+                    'published':published,
+                    'button':False
+                })
         else:
             return HttpResponseRedirect(reverse("profile"))
-
+    
     return render(request, "network/index.html",{
         'published':published
     })
@@ -172,4 +180,21 @@ def edit(request):
         publish.content = content
         publish.save()
         return JsonResponse({"message":"edited successfully","content":content})
+    return HttpResponseRedirect(reverse("index"))
+
+def like(request):
+    if request.method == "PUT":
+        with transaction.atomic():
+            data = json.loads(request.body)
+            post_id = data["post_id"]
+            likedPublish = Like.objects.filter(user=request.user,publishliked = post_id).exists()
+            if likedPublish:
+                liked = Like.objects.filter(user=request.user,publishliked = post_id).first()
+                liked.delete()
+                Publish.objects.get(id=post_id).likes-=1
+                return JsonResponse({"message":"unliked","likedNumber":Publish.objects.get(id=post_id).likes})
+            like = Like(user=request.user,publishliked = post_id)
+            like.save()
+            Publish.objects.get(id=post_id).likes+=1
+            return JsonResponse({"message":"liked","likedNumber":Publish.objects.get(id=post_id).likes})
     return HttpResponseRedirect(reverse("index"))
