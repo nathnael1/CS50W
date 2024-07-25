@@ -10,23 +10,20 @@ import json
 #user id request.user.id
 def index(request):
     published = Publish.objects.all().order_by('-time')
-    liked = Like.objects.filter(user=request.user).exists()
+    
+
     if request.user.is_authenticated:
         if Profile.objects.filter(user=request.user).exists():
            request.session['profileSet'] = Profile.objects.get(user=request.user).profileSet
         else:
            return HttpResponseRedirect(reverse("profile"))
         if request.session['profileSet']:
-            if liked:
-                return render(request, "network/index.html",{
-                    'published':published,
-                    'button':True
-                })
-            else:
-                return render(request, "network/index.html",{
-                    'published':published,
-                    'button':False
-                })
+            for publish in published:
+                publish.liked_by_user = publish.liked(request.user)
+            return render(request, "network/index.html",{
+                'published':published,
+                'button':True
+            })
         else:
             return HttpResponseRedirect(reverse("profile"))
     
@@ -182,19 +179,23 @@ def edit(request):
         return JsonResponse({"message":"edited successfully","content":content})
     return HttpResponseRedirect(reverse("index"))
 
+@csrf_exempt
 def like(request):
     if request.method == "PUT":
         with transaction.atomic():
             data = json.loads(request.body)
             post_id = data["post_id"]
-            likedPublish = Like.objects.filter(user=request.user,publishliked = post_id).exists()
+            publish_instance = Publish.objects.get(id=post_id)
+            likedPublish = Like.objects.filter(user=request.user,publishliked = publish_instance).exists()
             if likedPublish:
-                liked = Like.objects.filter(user=request.user,publishliked = post_id).first()
+                liked = Like.objects.filter(user=request.user,publishliked = publish_instance).first()
                 liked.delete()
-                Publish.objects.get(id=post_id).likes-=1
-                return JsonResponse({"message":"unliked","likedNumber":Publish.objects.get(id=post_id).likes})
-            like = Like(user=request.user,publishliked = post_id)
+                publish_instance.likes-=1
+                publish_instance.save()
+                return JsonResponse({"message":"unliked","likes":publish_instance.likes})
+            like = Like(user=request.user,publishliked = publish_instance)
             like.save()
-            Publish.objects.get(id=post_id).likes+=1
-            return JsonResponse({"message":"liked","likedNumber":Publish.objects.get(id=post_id).likes})
+            publish_instance.likes+=1
+            publish_instance.save()
+            return JsonResponse({"message":"liked","likes":publish_instance.likes})
     return HttpResponseRedirect(reverse("index"))

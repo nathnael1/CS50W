@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class User(AbstractUser):
     pass
@@ -20,6 +20,10 @@ class Publish(models.Model):
     content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
+   
+    def liked(self,user):
+        return Like.objects.filter(user=user, publishliked=self).exists()
+
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userLiked")
     publishliked = models.ForeignKey(Publish, on_delete=models.CASCADE, related_name="publishLiked")
