@@ -31,13 +31,66 @@
             <p class = "time">{{publish.time}}</p>
             <p class ="like">Likes{{publish.likes}}</p>
             {% if request.user.username == publish.user.username %}
-            <button id="edit" data-postid = "{{publish.id}}">Edit</button>
-            <button id="delete" data-postid = "{{publish.id}}">Delete</button>
-        {%endif%}
+                <button class="edit" data-postid = "{{publish.id}}">Edit</button>
+                <button class="delete" data-postid = "{{publish.id}}">Delete</button>
+            {%endif%}
         </div>
         {%empty%}
         <h1>No posts</h1>
     {% endfor %}
+        <script>
+            
+    //editing post
+    document.querySelectorAll('.edit').forEach(function(button) {
+        button.addEventListener('click', function() {
+            let content = this.closest('.published').querySelector('.content').innerHTML;
+            let post_id = button.dataset.postid
+            
+            console.log(post_id)
+            this.closest('.published').querySelector('.content').style.display="none";
+            this.closest('.published').querySelector('.time').style.display="none";
+            this.closest('.published').querySelector('.like').style.display="none";
+            this.closest('.published').querySelector('.edit').style.display="none";
+            this.closest('.published').querySelector('.delete').style.display="none";
+            
+            text = document.createElement('textarea')
+            save = document.createElement('button')
+            save.innerHTML = 'Save'
+            text.innerHTML = content
+            this.closest('.published').append(text)
+            this.closest('.published').append(save)
+            save.addEventListener('click',()=>{
+                content = text.value
+   
+                fetch('/edit',{
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                post_id: post_id,
+                                content: content,
+                                
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(result => {
+                                console.log(result.message)
+                               text.style.display="none";
+                                 save.style.display="none";
 
+                                this.closest('.published').querySelector('.content').style.display="block";
+                                this.closest('.published').querySelector('.time').style.display="block";
+                                this.closest('.published').querySelector('.like').style.display="block";
+                                this.closest('.published').querySelector('.edit').style.display="block";
+                                this.closest('.published').querySelector('.delete').style.display="block";
+                                this.closest('.published').querySelector('.content').innerHTML = content
+                })
+                            .catch(error => console.log('error', error))
+                
+            })
+        });
+    });
+        </script>
     
 {% endblock %}

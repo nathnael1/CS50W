@@ -166,7 +166,6 @@ def unfollow(request,username):
 def edit(request):
     if request.method == "PUT":
         data = json.loads(request.body)
-        user = request.user
         post_id = data["post_id"]
         content = data["content"]
         publish = Publish.objects.get(id=post_id)
