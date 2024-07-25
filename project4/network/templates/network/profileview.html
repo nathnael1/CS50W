@@ -10,7 +10,7 @@
             <p id = "followers">Followers {{followers}}</p>
             <p id = "following">Following {{following}}</p>
             <img src="{{image_link}}" alt="">
-            <p>Posts {{postNumber}}</p>
+            <p id = "postNumber">Posts {{postNumber}}</p>
             {% if request.user.is_authenticated and request.user.username != username %}
             {% if followed %}
 
@@ -25,11 +25,17 @@
     </div>
     
     {% for publish in publishes %}
+
         <div class="published">
-            <p  class = "postuser">{{publish.user}}</p>
+            <a href="#" class = "postuser">{{publish.user}}</a>
             <p class = "content">{{publish.content}}</p>
             <p class = "time">{{publish.time}}</p>
-            <p class ="like">Likes{{publish.likes}}</p>
+            <p class ="likeNumber">Likes: {{publish.likes}}</p>
+            {% if publish.liked_by_user and button %}
+            <button data-postid="{{publish.id}}" class = "like">dislike</button>
+            {% elif button %}
+            <button data-postid = "{{publish.id}}" class="like">like</button>
+            {% endif %}
             {% if request.user.username == publish.user.username %}
                 <button class="edit" data-postid = "{{publish.id}}">Edit</button>
                 <button class="delete" data-postid = "{{publish.id}}">Delete</button>
@@ -39,6 +45,57 @@
         <h1>No posts</h1>
     {% endfor %}
         <script>
+                    //delete post
+        document.querySelectorAll('.delete').forEach(function(button) {
+            button.addEventListener('click', function() {
+                let post_id = button.dataset.postid;
+                fetch('/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        post_id: post_id,
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result.message);
+                    button.closest('.published').style.display = 'none';
+                    document.getElementById('postNumber').innerHTML = `Posts: ${result.posts}`
+                })
+            })
+
+        })
+        //like and dislike
+        document.querySelectorAll('.like').forEach(function(button) {
+    let post_id = button.dataset.postid;
+    button.addEventListener('click', function() {
+        fetch('/like', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                post_id: post_id,
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result.message);
+            let like_element = this.closest('.published').querySelector('.likeNumber');
+            like_element.innerHTML = `Likes: ${result.likes}`;
+            
+            // Update the button text based on the current state
+            if (this.innerHTML.trim() === 'like') {
+                this.innerHTML = 'dislike';
+            } else {
+                this.innerHTML = 'like';
+            }
+        })
+        .catch(error => console.log('error', error));
+    });
+});
             
     //editing post
     document.querySelectorAll('.edit').forEach(function(button) {

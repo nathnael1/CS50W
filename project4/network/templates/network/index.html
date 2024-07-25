@@ -31,6 +31,27 @@
         <h1>No posts</h1>
     {% endfor %}
     <script>
+        //delete post
+        document.querySelectorAll('.delete').forEach(function(button) {
+            button.addEventListener('click', function() {
+                let post_id = button.dataset.postid;
+                fetch('delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        post_id: post_id,
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result.message);
+                    button.closest('.published').style.display = 'none';
+                })
+            })
+
+        })
         //like and dislike
         document.querySelectorAll('.like').forEach(function(button) {
     let post_id = button.dataset.postid;

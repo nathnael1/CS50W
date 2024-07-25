@@ -35,8 +35,11 @@ def following(request):
         following = Following.objects.filter(user=request.user.id)
         followinglist = [follow.following.id for follow in following]
         published = Publish.objects.filter(user__in=followinglist).order_by('-time')
-        return render(request, "network/following.html", {
-            'published': published
+        for publish in published:
+            publish.liked_by_user = publish.liked(request.user)
+        return render(request, "network/index.html",{
+            'published':published,
+            'button':True
         })
     return HttpResponseRedirect(reverse('index'))
 def login_view(request):
@@ -129,6 +132,21 @@ def profile_view(request,username):
         followed = False
     postNumber = Publish.objects.filter(user = user).count()
     publishes = Publish.objects.filter(user = user).order_by('-time')
+    for publish in publishes:
+        publish.liked_by_user = publish.liked(request.user)
+    if request.user.is_authenticated:
+        return render(request,"network/profileview.html",{
+        'button':True,
+        'followed':followed,
+        'username':username,
+        'bio':bio,
+        'image_link':image_link,
+        'profile':profile,
+        'followers':followers,
+        'following':following,
+        'postNumber':postNumber,
+        'publishes':publishes
+        })
     return render(request, "network/profileview.html",{
 
         'followed':followed,
@@ -198,4 +216,14 @@ def like(request):
             publish_instance.likes+=1
             publish_instance.save()
             return JsonResponse({"message":"liked","likes":publish_instance.likes})
+    return HttpResponseRedirect(reverse("index"))
+@csrf_exempt
+def delete(request):
+    if request.method == "DELETE":
+        data = json.loads(request.body)
+        post_id = data["post_id"]
+        publish = Publish.objects.get(id=post_id)
+        publish.delete()
+        postNumber = Publish.objects.filter(user = request.user).count()
+        return JsonResponse({"message":"deleted successfully","posts":postNumber})
     return HttpResponseRedirect(reverse("index"))

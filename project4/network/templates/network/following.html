@@ -9,19 +9,54 @@
         <input type="text" name = "content">
         <input type="submit"  value="POST">
     </form>
-
     {% for publish in published %}
-        <div class="published">
-            <a href="#" class = "postuser">{{publish.user}}</a>
-            <p class = "content">{{publish.content}}</p>
-            <p class = "time">{{publish.time}}</p>
-            <p class ="like">Likes{{publish.likes}}</p>
-        </div>
-        {%empty%}
-        <h1>No posts</h1>
-    {% endfor %}
+
+    <div class="published">
+        <a href="#" class = "postuser">{{publish.user}}</a>
+        <p class = "content">{{publish.content}}</p>
+        <p class = "time">{{publish.time}}</p>
+        <p class ="likeNumber">Likes: {{publish.likes}}</p>
+        {% if publish.liked_by_user and button %}
+        <button data-postid="{{publish.id}}" class = "like">dislike</button>
+        {% elif button %}
+        <button data-postid = "{{publish.id}}" class="like">like</button>
+        {% endif %}
+
+    </div>
+    {%empty%}
+    <h1>No posts</h1>
+{% endfor %}
 
 <script>
+       //like and dislike
+       document.querySelectorAll('.like').forEach(function(button) {
+    let post_id = button.dataset.postid;
+    button.addEventListener('click', function() {
+        fetch('like', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                post_id: post_id,
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result.message);
+            let like_element = this.closest('.published').querySelector('.likeNumber');
+            like_element.innerHTML = `Likes: ${result.likes}`;
+            
+            // Update the button text based on the current state
+            if (this.innerHTML.trim() === 'like') {
+                this.innerHTML = 'dislike';
+            } else {
+                this.innerHTML = 'like';
+            }
+        })
+        .catch(error => console.log('error', error));
+    });
+});
         const itemsPerPage = 10;
     const publishedItems = document.querySelectorAll('.published')
     function displayItems(page)
