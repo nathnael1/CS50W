@@ -25,8 +25,15 @@ def index(request):
     return render(request, "network/index.html",{
         'published':published
     })
-
-
+def following(request):
+    if request.user.is_authenticated:
+        following = Following.objects.filter(user=request.user.id)
+        followinglist = [follow.following.id for follow in following]
+        published = Publish.objects.filter(user__in=followinglist).order_by('-time')
+        return render(request, "network/following.html", {
+            'published': published
+        })
+    return HttpResponseRedirect(reverse('index'))
 def login_view(request):
     if request.method == "POST":
 
@@ -89,12 +96,14 @@ def profile(request):
 
 
 def publish(request):
-    if request.method == "POST":
-        content = request.POST["content"]
-        publish = Publish(user=request.user,content=content)
-        publish.save()
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            content = request.POST["content"]
+            publish = Publish(user=request.user,content=content)
+            publish.save()
+            return HttpResponseRedirect(reverse("index"))
         return HttpResponseRedirect(reverse("index"))
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("login"))
 
 @csrf_exempt
 def profile_view(request,username):
@@ -141,6 +150,7 @@ def follow(request, username):
             follow.save()
             following.save()
         return JsonResponse({"message": "followed successfully"})
+    return HttpResponseRedirect(reverse("index"))
 
 @csrf_exempt
 def unfollow(request,username):
@@ -151,3 +161,16 @@ def unfollow(request,username):
         previousfollow.delete()
         previousfollowing.delete()
         return JsonResponse({"message":"unfollowed succesfully"})
+    return HttpResponseRedirect(reverse("index"))
+@csrf_exempt
+def edit(request):
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        user = request.user
+        post_id = data["post_id"]
+        content = data["content"]
+        publish = Publish.objects.get(id=post_id)
+        publish.content = content
+        publish.save()
+        return JsonResponse({"message":"edited successfully","content":content})
+    return HttpResponseRedirect(reverse("index"))

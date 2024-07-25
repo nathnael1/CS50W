@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
     <h1>
-        All posts
+        Following Posts
     </h1>
     <form id="createpost" method = "post" action = "{% url 'publish' %}">
         {% csrf_token %}
@@ -11,28 +11,21 @@
     </form>
 
     {% for publish in published %}
-
         <div class="published">
             <a href="#" class = "postuser">{{publish.user}}</a>
             <p class = "content">{{publish.content}}</p>
             <p class = "time">{{publish.time}}</p>
             <p class ="like">Likes{{publish.likes}}</p>
-            {% if request.user.username == publish.user.username %}
-                <button class="edit" data-postid = "{{publish.id}}">Edit</button>
-                <button class="delete" data-postid = "{{publish.id}}">Delete</button>
-            {%endif%}
         </div>
         {%empty%}
         <h1>No posts</h1>
     {% endfor %}
-    <script>
-            const itemsPerPage = 10;
+
+<script>
+        const itemsPerPage = 10;
     const publishedItems = document.querySelectorAll('.published')
     function displayItems(page)
     {
-        publishedItems.forEach(item => {
-        item.style.display = 'none';
-        });
         const startIndex = (page -1) * itemsPerPage
         const endIndex = startIndex + itemsPerPage
         for (let i =startIndex; i < endIndex && i < publishedItems.length; i++)
@@ -57,9 +50,7 @@
     }
     displayItems(1);
     createPagination()
-    </script>
-
-
+</script>
 
 {% endblock %}
 

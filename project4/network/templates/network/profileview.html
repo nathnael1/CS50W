@@ -8,9 +8,10 @@
        <p>Username {{username}}</p>
          <p>Bio {{bio}}</p>
             <p id = "followers">Followers {{followers}}</p>
-            <p>Following {{following}}</p>
+            <p id = "following">Following {{following}}</p>
             <img src="{{image_link}}" alt="">
             <p>Posts {{postNumber}}</p>
+            {% if request.user.is_authenticated and request.user.username != username %}
             {% if followed %}
 
                 
@@ -20,6 +21,7 @@
 
                 <button id = "follow" data-user = {{username}}>Follow</button>
             {%endif%}
+            {% endif %}
     </div>
     
     {% for publish in publishes %}
@@ -28,6 +30,10 @@
             <p class = "content">{{publish.content}}</p>
             <p class = "time">{{publish.time}}</p>
             <p class ="like">Likes{{publish.likes}}</p>
+            {% if request.user.username == publish.user.username %}
+            <button id="edit" data-postid = "{{publish.id}}">Edit</button>
+            <button id="delete" data-postid = "{{publish.id}}">Delete</button>
+        {%endif%}
         </div>
         {%empty%}
         <h1>No posts</h1>
