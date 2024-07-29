@@ -151,7 +151,8 @@ def profile_view(request,username):
     followerpersons = []
     user = User.objects.get(username=username)
     username = user.username
-    print(username)
+    imgurl = Profile.objects.get(user  = request.user)
+    imageurl = imgurl.image_link
     profile = Profile.objects.get(user=user)
     bio = profile.bio
     image_link = profile.image_link
@@ -193,7 +194,7 @@ def profile_view(request,username):
         'following':following,
         'postNumber':postNumber,
         'button':True,
-        
+        'imageurl':imageurl,
         'publishes':publishes
         })
     return render(request, "network/profileview.html",{
