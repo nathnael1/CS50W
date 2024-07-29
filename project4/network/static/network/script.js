@@ -12,9 +12,13 @@
     });
     //following site
     
-    document.querySelector('#followingPage').addEventListener('click',(event)=>{
-        event.preventDefault()
-        window.location.href = `following`
+    document.querySelectorAll('.followingPage').forEach(element => {
+        element.addEventListener('click',(event)=>{
+        
+            event.preventDefault()
+            window.location.href = `following`
+    })
+
     })
 
     // document.querySelector("#edit").addEventListener('click',()=>{
@@ -40,6 +44,7 @@
     let followbutton = document.querySelector("#follow")
     let unfollowbutton = document.querySelector("#unfollow")
     function follow(user){
+        console.log(user)
         if (followb){
             followbutton = document.querySelector("#follow")
             fetch(`/follow/${user}`, {
@@ -131,7 +136,9 @@
     if (followbutton){
         document.querySelector('#follow').addEventListener('click', () => {
             followb = true
-            user = document.querySelector('#follow').dataset.user
+            let encodedUser = document.querySelector('#follow').dataset.user
+            let user = decodeURIComponent(encodedUser);
+
             document.querySelector('#follow').disabled = true
             follow(user)
             
@@ -140,7 +147,8 @@
     }
     if(unfollowbutton){
         document.querySelector('#unfollow').addEventListener('click', () => {
-            user = document.querySelector('#unfollow').dataset.user
+            let encodedUser = document.querySelector('#unfollow').dataset.user
+            let user = decodeURIComponent(encodedUser);
             document.querySelector('#unfollow').disabled = true
             followb = false
             follow(user)

@@ -1,11 +1,20 @@
-{% extends "network/layout.html" %}
+{% load static %}
 
-{% block body %}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <div class="login">
+        
     <h2>Register</h2>
-
+    <img src="{% static 'network/network.png' %}" alt="X">
     {% if message %}
-        <div>{{ message }}</div>
+        <div class = "message">{{ message }}</div>
     {% endif %}
 
     <form action="{% url 'register' %}" method="post">
@@ -25,6 +34,7 @@
         <input class="btn btn-primary" type="submit" value="Register">
     </form>
 
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
-
-{% endblock %}
+   <div class="register"> Already have an account? <a href="{% url 'login' %}">Log In here.</a></div>
+    </div>
+</body>
+</html>

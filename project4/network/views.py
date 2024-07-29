@@ -3,26 +3,44 @@ from django.db import IntegrityError,transaction
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from .models import User,Profile,Following,Followers,Publish,Like
+from datetime import datetime
 import json
 
 #user id request.user.id
 def index(request):
     published = Publish.objects.all().order_by('-time')
-    
-
+        
+    for publish in published:
+        publish.profile_image = publish.get_profile_image()
+        time_diff = timezone.now()-publish.time
+        publish.time_left = time_diff
+        if time_diff.days >= 1:
+            publish.time_left = f"{time_diff.days} days"
+        else:
+            hours = time_diff.seconds // 3600
+            if hours >= 1:
+                publish.time_left = f"{hours} hours"
+            else:
+                minutes = time_diff.seconds // 60
+                publish.time_left = f"{minutes} minutes"
     if request.user.is_authenticated:
         if Profile.objects.filter(user=request.user).exists():
            request.session['profileSet'] = Profile.objects.get(user=request.user).profileSet
         else:
            return HttpResponseRedirect(reverse("profile"))
         if request.session['profileSet']:
+            imgurl = Profile.objects.get(user  = request.user)
+            imageurl = imgurl.image_link
             for publish in published:
                 publish.liked_by_user = publish.liked(request.user)
+
             return render(request, "network/index.html",{
                 'published':published,
-                'button':True
+                'button':True,
+                'imageurl':imageurl
             })
         else:
             return HttpResponseRedirect(reverse("profile"))
@@ -32,14 +50,29 @@ def index(request):
     })
 def following(request):
     if request.user.is_authenticated:
+        imgurl = Profile.objects.get(user  = request.user)
+        imageurl = imgurl.image_link
         following = Following.objects.filter(user=request.user.id)
         followinglist = [follow.following.id for follow in following]
         published = Publish.objects.filter(user__in=followinglist).order_by('-time')
         for publish in published:
             publish.liked_by_user = publish.liked(request.user)
-        return render(request, "network/index.html",{
+            publish.profile_image = publish.get_profile_image()
+            time_diff = timezone.now()-publish.time
+            publish.time_left = time_diff
+            if time_diff.days >= 1:
+                publish.time_left = f"{time_diff.days} days"
+            else:
+                hours = time_diff.seconds // 3600
+                if hours >= 1:
+                    publish.time_left = f"{hours} hours"
+                else:
+                    minutes = time_diff.seconds // 60
+                    publish.time_left = f"{minutes} minutes"
+        return render(request, "network/following.html",{
             'published':published,
-            'button':True
+            'button':True,
+            'imageurl':imageurl
         })
     return HttpResponseRedirect(reverse('index'))
 def login_view(request):
@@ -118,6 +151,7 @@ def profile_view(request,username):
     followerpersons = []
     user = User.objects.get(username=username)
     username = user.username
+    print(username)
     profile = Profile.objects.get(user=user)
     bio = profile.bio
     image_link = profile.image_link
@@ -133,7 +167,20 @@ def profile_view(request,username):
     postNumber = Publish.objects.filter(user = user).count()
     publishes = Publish.objects.filter(user = user).order_by('-time')
     for publish in publishes:
-        publish.liked_by_user = publish.liked(request.user)
+            publish.liked_by_user = publish.liked(request.user)
+            publish.profile_image = publish.get_profile_image()
+            time_diff = timezone.now()-publish.time
+            publish.time_left = time_diff
+            if time_diff.days >= 1:
+                publish.time_left = f"{time_diff.days} days"
+            else:
+                hours = time_diff.seconds // 3600
+                if hours >= 1:
+                    publish.time_left = f"{hours} hours"
+                else:
+                    minutes = time_diff.seconds // 60
+                    publish.time_left = f"{minutes} minutes"
+
     if request.user.is_authenticated:
         return render(request,"network/profileview.html",{
         'button':True,
@@ -145,6 +192,8 @@ def profile_view(request,username):
         'followers':followers,
         'following':following,
         'postNumber':postNumber,
+        'button':True,
+        
         'publishes':publishes
         })
     return render(request, "network/profileview.html",{

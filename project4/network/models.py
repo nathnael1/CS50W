@@ -23,6 +23,11 @@ class Publish(models.Model):
    
     def liked(self,user):
         return Like.objects.filter(user=user, publishliked=self).exists()
+    def get_profile_image(self):
+        profile = Profile.objects.filter(user=self.user).first()
+        if profile:
+            return profile.image_link
+        return None
 
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userLiked")
