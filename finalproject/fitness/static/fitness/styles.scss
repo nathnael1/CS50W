@@ -1,0 +1,110 @@
+$background-color: #16161a;
+$headline-color:#fffffe;
+$card:#242629;
+$button:#7f5af0;
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    background-color: $background-color;
+
+    
+    @media(width >= 300px){
+        nav{
+            display:block;
+            width:100%;
+            ul{
+                margin: 4%;
+                display:flex;
+                justify-content:space-around;
+                li:first-child{
+                    margin-left: 5%;
+                }
+                li{
+                    a{
+                        color:$headline-color;
+                        text-decoration:none;
+                        font-size:1.1rem;
+                        text-align: left;
+                    }
+                    img{
+                        display:block;
+                        width:28%;
+                        margin-left: 11%;
+                    }
+                    #different{
+                        width:35%;
+                    }
+                }
+            }
+        }
+        div#main{
+            display:100%;
+            img{
+                display:block;
+                width:50%;
+                border-radius: 15%;
+                margin:auto;
+                margin-top: 80px;
+            }
+            ul{
+                width:50%;
+                margin:auto;
+                li:first-child{
+                    margin-left:12%;
+                    font-size: 1.3rem;
+                    font-weight: bold;
+                }
+                li{
+                   
+                    display:block;
+                    margin-top: 20px;
+                    color:$headline-color;
+                    text-decoration:none;
+                    font-size:1.1rem;
+                    text-align: left;
+                
+                }
+            }
+        }
+        div#mainsecond{
+            margin-top: 6%;
+            padding: 15% 5%;
+            background-color:$card;
+        
+            #workout{
+                padding:2%;
+                background-color:$background-color;
+                color:$headline-color;
+                
+                ul{
+                
+                    padding-top:10%;
+                    list-style-type: none;
+                    width:100%;
+                    li{
+                        margin-top: 5%;
+                        color:$headline-color;
+                        text-decoration: none;
+                        text-align: center;
+                        font-size: 1.5rem;
+                    }
+                    
+                }
+                button{
+                    display:block;
+                    margin:auto;
+                    margin-bottom: 5%;
+                    margin-top: 5%;
+                    background-color: $button;
+                    color:$headline-color;
+                    padding:15px;
+                    font-size:1.3rem;
+
+                }
+            }
+        }
+    }
+
+}

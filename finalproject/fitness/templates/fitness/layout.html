@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'fitness/styles.css' %}">
+    <title>{% block title%}{%endblock%}</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><img src="{% static 'fitness/home.svg' %}" alt=""><a href="">Home</a></li>
+            <li><img src="{% static 'fitness/status.svg' %}" alt=""><a href="">Status</a></li>
+            <li><img  id = "different" src="{% static 'fitness/workout.svg' %}" alt=""><a href="">Workout</a></li>
+            <li><img src="{% static 'fitness/contact.svg' %}" alt=""><a href="">Contact</a></li>
+        </ul>
+    </nav>
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

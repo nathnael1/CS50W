@@ -1,0 +1,30 @@
+{% extends "fitness/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+    <div id="main">
+        <div>
+            <img src="{% static 'fitness/elon.jpg'%}" alt="">
+            <ul>
+                <li>Elon Musk</li>
+                <li><strong>Excercise:</strong> Weight Liftinig</li>
+                <li><strong>Difficulty:</strong> Medium</li>
+            </ul>
+        </div>
+        
+
+    </div>
+    <div id="mainsecond">
+        <div id="workout">
+            <ul>
+                <li>Huge Chest</li>
+                <li>6 ABS</li>
+                <li>Lose Wight</li>
+                <li>Gain Muscle</li>
+                <li>Get Fit</li>
+            </ul>
+            <button>Start Now</button>
+        </div>
+    </div>
+{% endblock %}
