@@ -1,7 +1,8 @@
 $background-color: #16161a;
 $headline-color:#fffffe;
 $card:#242629;
-$button:#7f5af0;
+$button:rgb(127, 90, 240);
+$rare: #2cb67d;
 *{
     margin:0;
     padding:0;
@@ -9,11 +10,12 @@ $button:#7f5af0;
 body{
     background-color: $background-color;
 
-    
-    @media(width >= 300px){
+    overflow-x: hidden;
+    @media(width >= 250px){
         nav{
             display:block;
             width:100%;
+            background-color: $background-color;
             ul{
                 margin: 4%;
                 display:flex;
@@ -38,9 +40,11 @@ body{
                     }
                 }
             }
-        }
+        } //end of nav
+
         div#main{
             display:100%;
+            background-color:$background-color;
             img{
                 display:block;
                 width:50%;
@@ -55,6 +59,7 @@ body{
                     margin-left:12%;
                     font-size: 1.3rem;
                     font-weight: bold;
+                    color:$rare;
                 }
                 li{
                    
@@ -67,17 +72,25 @@ body{
                 
                 }
             }
-        }
+        }//end of main
+
         div#mainsecond{
             margin-top: 6%;
             padding: 15% 5%;
             background-color:$card;
         
-            #workout{
+            .workout{
+                margin-top: 4%;
                 padding:2%;
                 background-color:$background-color;
                 color:$headline-color;
-                
+                p{
+                    text-align: center;
+                    font-size:2rem;
+                    color:$rare;
+                    font-weight:bolder;
+                    margin-top: 2%;
+                }
                 ul{
                 
                     padding-top:10%;
@@ -89,6 +102,9 @@ body{
                         text-decoration: none;
                         text-align: center;
                         font-size: 1.5rem;
+                    }
+                    li:first-child{
+                        margin-top: 2%;
                     }
                     
                 }
@@ -104,7 +120,386 @@ body{
 
                 }
             }
-        }
-    }
+          
+        } //end of mainsecond
+        #quotem{
+            background-color: $card;
+            padding:5% 0;
+        #quote{
+            margin-top: 2%;
+            padding: 5%;
+            width:90%;
+            margin:auto;
+            background-color:$background-color;
 
+            font-weight: bold;
+            #quotecontent{
+                font-style: italic;
+                color:$rare;
+                text-align: center;
+                font-size: 1.5rem;
+            }
+            .fadein{
+                animation:fadein 2s;
+            }
+            @keyframes fadein {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+        }// end of quote
+    }//end of quotem
+
+        footer {
+
+            background-color: $background-color;
+            color: $headline-color;
+            padding: 20px 0;
+            text-align: center;
+        
+            .footer-content {
+                max-width: 1200px;
+                margin: auto;
+                padding: 0 20px;
+        
+                p {
+                    margin: 10px 0;
+                }
+        
+                .footer-links {
+                    list-style: none;
+                    padding: 0;
+                    margin: 10px 0;
+                    display: flex;
+                    justify-content: center;
+        
+                    li {
+                        margin: 0 15px;
+        
+                        a {
+                            color: $headline-color;
+                            text-decoration: none;
+                            font-size: 1rem;
+        
+                            &:hover {
+                                color: $rare;
+                            }
+                            img{
+                                width:25%
+                            }
+                        }
+                    }
+                }
+                .divider{
+                    border-top:1px solid $rare;
+                    padding-top: 4%;
+                }
+            }
+        }
+     
+     } //media query endtag   
+     @media(width>=750px)
+     {
+        nav{
+            display:block;
+            width:100%;
+            background-color: $background-color;
+            ul{
+                
+                display:flex;
+                justify-content:space-evenly;
+                li:first-child{
+                    margin-left: 20%;
+                }
+                li{
+                    a{
+                        color:$headline-color;
+                        text-decoration:none;
+                        font-size:1.4rem;
+                        text-align: left;
+                    }
+                    img{
+                        display:block;
+                        width:20%;
+                        margin-left: 11%;
+                    }
+                    #different{
+                        width:25%;
+                    }
+                }
+            }
+        } //endnav
+
+        div#main{
+            display:100%;
+            background-color:$background-color;
+             div{
+                width:80%;
+                margin:auto;
+                display:flex;
+
+                img{
+                    border-radius: 15%;
+
+                }
+                ul{
+                    padding-left:20%;
+                    li:first-child{
+                        margin-left:12%;
+                        font-size: 2rem;
+                        font-weight: bold;
+                        color:$rare;
+                    }
+                    li{
+                       
+                        display:block;
+                        margin-top: 20px;
+                        color:$headline-color;
+                        text-decoration:none;
+                        font-size:1.4rem;
+                        text-align: left;
+                    
+                    }
+                }
+            }
+            }
+                //end of main
+                footer {
+
+                
+                    .footer-content {
+
+                
+                        .footer-links {
+                            list-style: none;
+                            padding: 0;
+                            margin: 10px 0;
+                            display: flex;
+                            justify-content: center;
+                            p {
+                                margin: 10px 0;
+                                font-size: 1.4rem;
+                            }
+                            li {
+                                margin: 0 15px;
+                
+                                a {
+                                    font-size:1.2rem;
+ 
+                                    img{
+                                        width:15%
+                                    }
+                                }
+                            }
+                        }
+                        .divider{
+                            border-top:1px solid $rare;
+                            padding-top: 4%;
+                        }
+                    }
+                }
+     } // media query endtag
+
+
+     @media(width >= 1150px)
+     {
+        nav{
+            display:block;
+            width:100%;
+            margin-top: -2%;
+            background-color: $background-color;
+            ul{
+                
+                display:flex;
+                justify-content:space-around;
+                li:first-child{
+                    margin-left: 20%;
+                }
+                li{
+                    a{
+                        color:$headline-color;
+                        text-decoration:none;
+                        font-size:1.4rem;
+                        text-align: left;
+                    }
+                    img{
+                        display:block;
+                        width:10%;
+                        margin-left: 0;
+                    }
+                    #different{
+                        width:15%;
+                        margin-left: 5%;
+                    }
+                }
+            }
+        } //endnav
+
+        div#main{
+            display:100%;
+            background-color:$background-color;
+             div{
+                width:80%;
+                margin:auto;
+                
+                display:flex;
+                justify-content: flex-end;
+
+                img{
+                    border-radius: 15%;
+                    width:20%
+
+                }
+                ul{
+                    flex-grow: 1;
+                    padding-left:40%;
+                    li:first-child{
+                        margin-left:12%;
+                        font-size: 2.2rem;
+                        font-weight: bold;
+                        color:$rare;
+                    }
+                    li{
+                       
+                        display:block;
+                        margin-top: 20px;
+                        color:$headline-color;
+                        text-decoration:none;
+                        font-size:1.6rem;
+                        text-align: left;
+                    
+                    }
+                }
+            }
+            }
+                //end of main
+
+                div#mainsecond{
+                    
+                    padding-top:3%;
+                    display:flex;
+                    background-color:$card;
+                    justify-content: space-around;
+                    .workout{
+                        
+                        margin:0;
+                        margin-right: 1%;
+                        padding:0;
+                        min-width:550px;
+                        padding:25px;
+                        background-color:$background-color;
+                        color:$headline-color;
+                        p{
+                            text-align: center;
+                            font-size:1.8rem;
+                            color:$rare;
+                            font-weight:bolder;
+                            margin-top: 2%;
+                        }
+                        ul{
+                        
+                            padding-top:10%;
+                            list-style-type: none;
+                            width:100%;
+                            li{
+                                margin-top: 5%;
+                                color:$headline-color;
+                                text-decoration: none;
+                                text-align: center;
+                                font-size: 1.5rem;
+                            }
+                            li:first-child{
+                                margin-top: 2%;
+                            }
+                            
+                        }
+                        button{
+                            display:block;
+                            margin:auto;
+                            margin-bottom: 5%;
+                            margin-top: 5%;
+                            background-color: $button;
+                            color:$headline-color;
+                            padding:15px;
+                            font-size:1.5rem;
+        
+                        }
+                    }
+                  
+                } //end of mainsecond
+
+                #quotem{
+                    background-color: $card;
+                    padding:5% 0;
+                    padding-top: 0;
+                #quote{
+                    margin-top: 2%;
+                    padding: 5%;
+                    width:90%;
+                    margin:auto;
+                    background-color:$background-color;
+        
+                    font-weight: bold;
+                    #quotecontent{
+                        font-style: italic;
+                        color:$rare;
+                        text-align: center;
+                        font-size: 1.5rem;
+                    }
+                    .fadein{
+                        animation:fadein 2s;
+                    }
+                    @keyframes fadein {
+                        from {
+                            opacity: 0;
+                        }
+                        to {
+                            opacity: 1;
+                        }
+                    }
+                }// end of quote
+            }//end of quotem
+
+            footer {
+
+                
+                .footer-content {
+
+            
+                    .footer-links {
+                        list-style: none;
+                        padding: 0;
+                        margin: 10px 0;
+                        display: flex;
+                        justify-content: center;
+                        p {
+                            margin: 10px 0;
+                            font-size: 1.4rem;
+                        }
+                        li {
+                            margin: 0 15px;
+            
+                            a {
+                                font-size:1.2rem;
+
+                                img{
+                                    width:7%
+                                }
+                            }
+                        }
+                    }
+                    .divider{
+                        border-top:1px solid $rare;
+                        padding-top: 4%;
+                    }
+                }
+            }
+
+     } //end of media query
+
+       
+//body end tag
 }

@@ -5,11 +5,13 @@
 
 body {
   background-color: #16161a;
+  overflow-x: hidden;
 }
-@media (width >= 300px) {
+@media (width >= 250px) {
   body nav {
     display: block;
     width: 100%;
+    background-color: #16161a;
   }
   body nav ul {
     margin: 4%;
@@ -35,6 +37,7 @@ body {
   }
   body div#main {
     display: 100%;
+    background-color: #16161a;
   }
   body div#main img {
     display: block;
@@ -51,6 +54,7 @@ body {
     margin-left: 12%;
     font-size: 1.3rem;
     font-weight: bold;
+    color: #2cb67d;
   }
   body div#main ul li {
     display: block;
@@ -65,31 +69,354 @@ body {
     padding: 15% 5%;
     background-color: #242629;
   }
-  body div#mainsecond #workout {
+  body div#mainsecond .workout {
+    margin-top: 4%;
     padding: 2%;
     background-color: #16161a;
     color: #fffffe;
   }
-  body div#mainsecond #workout ul {
+  body div#mainsecond .workout p {
+    text-align: center;
+    font-size: 2rem;
+    color: #2cb67d;
+    font-weight: bolder;
+    margin-top: 2%;
+  }
+  body div#mainsecond .workout ul {
     padding-top: 10%;
     list-style-type: none;
     width: 100%;
   }
-  body div#mainsecond #workout ul li {
+  body div#mainsecond .workout ul li {
     margin-top: 5%;
     color: #fffffe;
     text-decoration: none;
     text-align: center;
     font-size: 1.5rem;
   }
-  body div#mainsecond #workout button {
+  body div#mainsecond .workout ul li:first-child {
+    margin-top: 2%;
+  }
+  body div#mainsecond .workout button {
     display: block;
     margin: auto;
     margin-bottom: 5%;
     margin-top: 5%;
-    background-color: #7f5af0;
+    background-color: rgb(127, 90, 240);
     color: #fffffe;
     padding: 15px;
     font-size: 1.3rem;
+  }
+  body #quotem {
+    background-color: #242629;
+    padding: 5% 0;
+  }
+  body #quotem #quote {
+    margin-top: 2%;
+    padding: 5%;
+    width: 90%;
+    margin: auto;
+    background-color: #16161a;
+    font-weight: bold;
+  }
+  body #quotem #quote #quotecontent {
+    font-style: italic;
+    color: #2cb67d;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  body #quotem #quote .fadein {
+    animation: fadein 2s;
+  }
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  body footer {
+    background-color: #16161a;
+    color: #fffffe;
+    padding: 20px 0;
+    text-align: center;
+  }
+  body footer .footer-content {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+  }
+  body footer .footer-content p {
+    margin: 10px 0;
+  }
+  body footer .footer-content .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+  }
+  body footer .footer-content .footer-links li {
+    margin: 0 15px;
+  }
+  body footer .footer-content .footer-links li a {
+    color: #fffffe;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  body footer .footer-content .footer-links li a:hover {
+    color: #2cb67d;
+  }
+  body footer .footer-content .footer-links li a img {
+    width: 25%;
+  }
+  body footer .footer-content .divider {
+    border-top: 1px solid #2cb67d;
+    padding-top: 4%;
+  }
+}
+@media (width >= 750px) {
+  body nav {
+    display: block;
+    width: 100%;
+    background-color: #16161a;
+  }
+  body nav ul {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  body nav ul li:first-child {
+    margin-left: 20%;
+  }
+  body nav ul li a {
+    color: #fffffe;
+    text-decoration: none;
+    font-size: 1.4rem;
+    text-align: left;
+  }
+  body nav ul li img {
+    display: block;
+    width: 20%;
+    margin-left: 11%;
+  }
+  body nav ul li #different {
+    width: 25%;
+  }
+  body div#main {
+    display: 100%;
+    background-color: #16161a;
+  }
+  body div#main div {
+    width: 80%;
+    margin: auto;
+    display: flex;
+  }
+  body div#main div img {
+    border-radius: 15%;
+  }
+  body div#main div ul {
+    padding-left: 20%;
+  }
+  body div#main div ul li:first-child {
+    margin-left: 12%;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2cb67d;
+  }
+  body div#main div ul li {
+    display: block;
+    margin-top: 20px;
+    color: #fffffe;
+    text-decoration: none;
+    font-size: 1.4rem;
+    text-align: left;
+  }
+  body footer .footer-content .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+  }
+  body footer .footer-content .footer-links p {
+    margin: 10px 0;
+    font-size: 1.4rem;
+  }
+  body footer .footer-content .footer-links li {
+    margin: 0 15px;
+  }
+  body footer .footer-content .footer-links li a {
+    font-size: 1.2rem;
+  }
+  body footer .footer-content .footer-links li a img {
+    width: 15%;
+  }
+  body footer .footer-content .divider {
+    border-top: 1px solid #2cb67d;
+    padding-top: 4%;
+  }
+}
+@media (width >= 1150px) {
+  body nav {
+    display: block;
+    width: 100%;
+    margin-top: -2%;
+    background-color: #16161a;
+  }
+  body nav ul {
+    display: flex;
+    justify-content: space-around;
+  }
+  body nav ul li:first-child {
+    margin-left: 20%;
+  }
+  body nav ul li a {
+    color: #fffffe;
+    text-decoration: none;
+    font-size: 1.4rem;
+    text-align: left;
+  }
+  body nav ul li img {
+    display: block;
+    width: 10%;
+    margin-left: 0;
+  }
+  body nav ul li #different {
+    width: 15%;
+    margin-left: 5%;
+  }
+  body div#main {
+    display: 100%;
+    background-color: #16161a;
+  }
+  body div#main div {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+  body div#main div img {
+    border-radius: 15%;
+    width: 20%;
+  }
+  body div#main div ul {
+    flex-grow: 1;
+    padding-left: 40%;
+  }
+  body div#main div ul li:first-child {
+    margin-left: 12%;
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #2cb67d;
+  }
+  body div#main div ul li {
+    display: block;
+    margin-top: 20px;
+    color: #fffffe;
+    text-decoration: none;
+    font-size: 1.6rem;
+    text-align: left;
+  }
+  body div#mainsecond {
+    padding-top: 3%;
+    display: flex;
+    background-color: #242629;
+    justify-content: space-around;
+  }
+  body div#mainsecond .workout {
+    margin: 0;
+    margin-right: 1%;
+    padding: 0;
+    min-width: 550px;
+    padding: 25px;
+    background-color: #16161a;
+    color: #fffffe;
+  }
+  body div#mainsecond .workout p {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #2cb67d;
+    font-weight: bolder;
+    margin-top: 2%;
+  }
+  body div#mainsecond .workout ul {
+    padding-top: 10%;
+    list-style-type: none;
+    width: 100%;
+  }
+  body div#mainsecond .workout ul li {
+    margin-top: 5%;
+    color: #fffffe;
+    text-decoration: none;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  body div#mainsecond .workout ul li:first-child {
+    margin-top: 2%;
+  }
+  body div#mainsecond .workout button {
+    display: block;
+    margin: auto;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    background-color: rgb(127, 90, 240);
+    color: #fffffe;
+    padding: 15px;
+    font-size: 1.5rem;
+  }
+  body #quotem {
+    background-color: #242629;
+    padding: 5% 0;
+    padding-top: 0;
+  }
+  body #quotem #quote {
+    margin-top: 2%;
+    padding: 5%;
+    width: 90%;
+    margin: auto;
+    background-color: #16161a;
+    font-weight: bold;
+  }
+  body #quotem #quote #quotecontent {
+    font-style: italic;
+    color: #2cb67d;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  body #quotem #quote .fadein {
+    animation: fadein 2s;
+  }
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  body footer .footer-content .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+  }
+  body footer .footer-content .footer-links p {
+    margin: 10px 0;
+    font-size: 1.4rem;
+  }
+  body footer .footer-content .footer-links li {
+    margin: 0 15px;
+  }
+  body footer .footer-content .footer-links li a {
+    font-size: 1.2rem;
+  }
+  body footer .footer-content .footer-links li a img {
+    width: 7%;
+  }
+  body footer .footer-content .divider {
+    border-top: 1px solid #2cb67d;
+    padding-top: 4%;
   }
 }/*# sourceMappingURL=styles.css.map */
